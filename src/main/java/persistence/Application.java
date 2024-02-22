@@ -6,6 +6,8 @@ import jdbc.JdbcTemplate;
 import jdbc.RowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import persistence.entity.EntityManager;
+import persistence.entity.MyEntityManager;
 import persistence.sql.Person;
 import persistence.sql.ddl.CreateQueryBuilder;
 import persistence.sql.ddl.DropQueryBuilder;
@@ -35,6 +37,11 @@ public class Application {
             jdbcTemplate.execute(insertQueryBuilder.build(person));
             jdbcTemplate.execute(insertQueryBuilder.build(person2));
 
+            EntityManager entityManager = new MyEntityManager(jdbcTemplate);
+            Person person1 = entityManager.find(Person.class, 2L);
+            System.out.println("person1.toString() = " + person1.toString());
+
+//
             SelectAllQueryBuilder selectAllQueryBuilder = new SelectAllQueryBuilder(Person.class);
             String selectAllQuery = selectAllQueryBuilder.build();
             RowMapper<Person> rowMapper = resultSet -> {
